@@ -2,44 +2,105 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hadiah Gratis!</title>
   <style>
     body {
       text-align: center;
-      font-family: Arial, sans-serif;
-      padding-top: 100px;
-      background-color: #f2f2f2;
+      font-family: 'Arial', sans-serif;
+      background: #333;
+      color: white;
+      margin: 0;
+      padding: 0;
     }
 
     h1 {
-      color: green;
+      color: #a4c639;
+      padding-top: 150px;
+      font-size: 50px;
     }
 
-    button {
+    .btn {
       padding: 20px 40px;
-      font-size: 18px;
-      cursor: pointer;
-      background-color: gold;
+      font-size: 20px;
+      background-color: #ff9800;
       border: none;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* Modal Styling */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding-top: 100px;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 10px;
+      color: #333;
+      text-align: center;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-content h2 {
+      color: #ff5722;
+      font-size: 35px;
+    }
+
+    .modal-content button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .modal-content button:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
 
-  <h1>SELAMAT! Kamu Mendapat Hadiah!</h1>
+  <h1>SELAMAT! Latif Ramadhan Hardiansyah Kamu Mendapat Hadiah!</h1>
   <p>Klik tombol di bawah ini untuk mengklaim hadiahmu 🎁</p>
-  <button onclick="mulaiPrank()">Klaim Hadiah</button>
+  <button class="btn" onclick="mulaiPrank()">Klaim Hadiah</button>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h2>😜 Kamu kena prank bro!</h2>
+      <button onclick="closeModal()">OK</button>
+    </div>
+  </div>
 
   <script>
     function mulaiPrank() {
-      let i = 0;
-      let prankLoop = setInterval(() => {
-        alert("😜 Kamu kena prank bro!\nKlik OK untuk melanjutkan...");
-        i++;
-        if (i >= 10) clearInterval(prankLoop);
-      }, 300);
+      // Tampilkan modal yang tidak bisa di-close
+      document.getElementById('modal').style.display = "block";
+    }
+
+    function closeModal() {
+      // Menutup modal setelah klik OK
+      document.getElementById('modal').style.display = "none";
     }
   </script>
 
