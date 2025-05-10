@@ -12,6 +12,7 @@
       color: white;
       margin: 0;
       padding: 0;
+      overflow: hidden;
     }
 
     h1 {
@@ -80,7 +81,7 @@
 </head>
 <body>
 
-  <h1>SELAMAT! Latif Kamu Mendapat Hadiah!</h1>
+  <h1>SELAMAT! Kamu Mendapat Hadiah!</h1>
   <p>Klik tombol di bawah ini untuk mengklaim hadiahmu 🎁</p>
   <button class="btn" onclick="mulaiPrank()">Klaim Hadiah</button>
 
@@ -93,9 +94,25 @@
   </div>
 
   <script>
+    let prankCount = 0;
+    let prankLoop;
+
     function mulaiPrank() {
-      // Tampilkan modal yang tidak bisa di-close
-      document.getElementById('modal').style.display = "block";
+      prankCount = 0;
+      // Main prank loop, muncul modal terus
+      prankLoop = setInterval(function() {
+        // Tampilkan modal
+        document.getElementById('modal').style.display = "block";
+        prankCount++;
+        // Efek suara mengganggu (bisa ganti dengan suara lainnya)
+        let audio = new Audio('https://www.soundjay.com/button/beep-07.wav');
+        audio.play();
+
+        // Stop setelah beberapa kali muncul
+        if (prankCount >= 10) {
+          clearInterval(prankLoop);
+        }
+      }, 1500);
     }
 
     function closeModal() {
