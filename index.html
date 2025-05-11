@@ -2,124 +2,85 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hadiah Gratis!</title>
+  <title>Prank Hafidz</title>
   <style>
     body {
-      text-align: center;
-      font-family: 'Arial', sans-serif;
-      background: #333;
-      color: white;
       margin: 0;
-      padding: 0;
       overflow: hidden;
+      background-color: black;
     }
-
-    h1 {
-      color: #a4c639;
-      padding-top: 150px;
-      font-size: 50px;
-    }
-
-    .btn {
-      padding: 20px 40px;
-      font-size: 20px;
-      background-color: #ff9800;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .btn:hover {
-      transform: scale(1.1);
-    }
-
-    /* Modal Styling */
-    .modal {
+    #jumpscare {
       display: none;
       position: fixed;
-      z-index: 1;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding-top: 100px;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: url('https://i.imgur.com/your-jumpscare-image.jpg') center center no-repeat;
+      background-size: cover;
+      z-index: 9999;
     }
-
-    .modal-content {
-      background-color: #fff;
-      padding: 40px;
-      border-radius: 10px;
-      color: #333;
+    #questionModal {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      z-index: 10000;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
       text-align: center;
-      max-width: 500px;
-      margin: auto;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     }
-
-    .modal-content h2 {
-      color: #ff5722;
-      font-size: 35px;
-    }
-
-    .modal-content button {
-      padding: 15px 30px;
-      font-size: 18px;
-      background-color: #4caf50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .modal-content button:hover {
-      background-color: #45a049;
+    #questionModal button {
+      margin: 10px;
+      padding: 10px 20px;
     }
   </style>
 </head>
 <body>
 
-  <h1>SELAMAT! Kamu Mendapat Hadiah!</h1>
-  <p>Klik tombol di bawah ini untuk mengklaim hadiahmu 🎁</p>
-  <button class="btn" onclick="mulaiPrank()">Klaim Hadiah</button>
+<div id="jumpscare"></div>
 
-  <!-- Modal -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <h2>😜 Kamu kena prank bro!</h2>
-      <button onclick="closeModal()">OK</button>
-    </div>
-  </div>
+<div id="questionModal">
+  <p>Apakah kamu takut kepada Hafidz Nurochman?</p>
+  <button id="yesBtn">Ya</button>
+  <button id="noBtn">Tidak</button>
+</div>
 
-  <script>
-    let prankCount = 0;
-    let prankLoop;
+<audio id="screamAudio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
 
-    function mulaiPrank() {
-      prankCount = 0;
-      // Main prank loop, muncul modal terus
-      prankLoop = setInterval(function() {
-        // Tampilkan modal
-        document.getElementById('modal').style.display = "block";
-        prankCount++;
-        // Efek suara mengganggu (bisa ganti dengan suara lainnya)
-        let audio = new Audio('https://www.soundjay.com/button/beep-07.wav');
-        audio.play();
+<script>
+  const jumpscare = document.getElementById('jumpscare');
+  const questionModal = document.getElementById('questionModal');
+  const screamAudio = document.getElementById('screamAudio');
+  const yesBtn = document.getElementById('yesBtn');
+  const noBtn = document.getElementById('noBtn');
 
-        // Stop setelah beberapa kali muncul
-        if (prankCount >= 10) {
-          clearInterval(prankLoop);
-        }
-      }, 1500);
-    }
+  // Tampilkan jumpscare setelah 3 detik
+  setTimeout(() => {
+    jumpscare.style.display = 'block';
+    screamAudio.play();
+  }, 3000);
 
-    function closeModal() {
-      // Menutup modal setelah klik OK
-      document.getElementById('modal').style.display = "none";
-    }
-  </script>
+  // Tampilkan modal saat mencoba menutup atau memuat ulang halaman
+  window.onbeforeunload = function(e) {
+    questionModal.style.display = 'block';
+    // Mencegah penutupan halaman
+    e.preventDefault();
+    e.returnValue = '';
+    return '';
+  };
+
+  // Tombol "Ya" menutup halaman
+  yesBtn.addEventListener('click', () => {
+    window.onbeforeunload = null; // Hapus handler sebelumunload
+    window.close(); // Coba tutup jendela
+  });
+
+  // Tombol "Tidak" memutar ulang suara
+  noBtn.addEventListener('click', () => {
+    screamAudio.currentTime = 0;
+    screamAudio.play();
+  });
+</script>
 
 </body>
 </html>
