@@ -2,15 +2,21 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Hafidz Nurochman Jumpscare</title>
+  <title>Hafidz Nurochman</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       overflow: hidden;
       font-family: 'Arial', sans-serif;
-      background: black url('https://giphy.com/gifs/evil-beatboxing-woman-gonjiam-movie-asylum-8h3sQwoAEaWpq75gDX') center/cover no-repeat;
       height: 100vh;
+      width: 100vw;
+      background-color: black;
+      background-image: url('https://media.giphy.com/media/8h3sQwoAEaWpq75gDX/giphy.gif');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      cursor: none;
     }
 
     #modal {
@@ -18,17 +24,13 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.95);
+      background-color: rgba(0, 0, 0, 0.9);
       color: white;
       padding: 30px;
       border-radius: 15px;
       text-align: center;
       z-index: 999;
-      box-shadow: 0 0 20px red;
-    }
-
-    #modal h2 {
-      margin-bottom: 20px;
+      box-shadow: 0 0 30px crimson;
     }
 
     .btn {
@@ -53,30 +55,57 @@
     #jumpscare {
       display: none;
       position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('https://i.ibb.co/yVr6ZDd/jumpscare-face.png') center/contain no-repeat;
-      background-color: black;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black url('https://i.ibb.co/yVr6ZDd/jumpscare-face.png') center/contain no-repeat;
       z-index: 1000;
+    }
+
+    #eyes {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 100px;
+      background-image: url('https://i.ibb.co/Jv7F9LZ/red-eyes.gif');
+      background-size: contain;
+      background-repeat: no-repeat;
+      z-index: 1050;
+      animation: blink 1s infinite alternate;
     }
 
     @keyframes shake {
       0% { transform: translate(0, 0); }
-      20% { transform: translate(-10px, 0); }
-      40% { transform: translate(10px, 0); }
-      60% { transform: translate(-10px, 0); }
-      80% { transform: translate(10px, 0); }
+      25% { transform: translate(-10px, 0); }
+      50% { transform: translate(10px, 0); }
+      75% { transform: translate(-10px, 0); }
       100% { transform: translate(0, 0); }
     }
 
     .shake {
-      animation: shake 0.5s;
+      animation: shake 0.6s;
     }
+
+    @keyframes glitch {
+      0% { transform: translate(0, 0); opacity: 1; }
+      25% { transform: translate(-5px, 0); opacity: 0.8; }
+      50% { transform: translate(5px, 0); opacity: 0.7; }
+      75% { transform: translate(-5px, 0); opacity: 0.8; }
+      100% { transform: translate(5px, 0); opacity: 1; }
+    }
+
+    .glitch {
+      animation: glitch 0.1s infinite;
+    }
+
   </style>
 </head>
 <body>
 
+<div id="eyes"></div>
 <div id="jumpscare"></div>
 
 <div id="modal">
@@ -85,41 +114,67 @@
   <button class="btn no" onclick="scare()">Tidak</button>
 </div>
 
-<audio id="scream" src="https://www.myinstants.com/media/sounds/movie_1.mp3"></audio>
+<!-- Audio Background Horor -->
+<audio id="background-music" src="https://www.myinstants.com/media/sounds/silence-in-the-dark.mp3" loop autoplay></audio>
+<!-- Audio Jumpscare -->
+<audio id="scream" src="https://www.myinstants.com/media/sounds/movie_1.mp3" preload="auto"></audio>
 
 <script>
   const scream = document.getElementById('scream');
   const jumpscare = document.getElementById('jumpscare');
+  const backgroundMusic = document.getElementById('background-music');
 
-  // Fungsi utama jumpscare
   function scare() {
     document.body.classList.add("shake");
     jumpscare.style.display = "block";
     scream.currentTime = 0;
     scream.play();
+    document.body.classList.add("glitch");
 
     setTimeout(() => {
       jumpscare.style.display = "none";
-      document.body.classList.remove("shake");
-    }, 1500);
+      document.body.classList.remove("shake", "glitch");
+    }, 2000);
   }
-
-  // Cegah keluar sebelum menjawab
-  window.onbeforeunload = function () {
-    return "Jawab dulu, kamu takut?";
-  };
 
   function allowExit() {
-    alert("Kamu mengakui ketakutanmu. Terima kasih.");
-    window.onbeforeunload = null;
-    window.close(); // Jika dibuka dengan window.open
+    alert("Kamu mengakui ketakutanmu. Tapi tetap tidak bisa keluar hehe.");
+    scare();
   }
 
-  // Otomatis jumpscare saat halaman terbuka
+  // Coba masuk fullscreen saat halaman dibuka
+  function requestFullscreen() {
+    const el = document.documentElement;
+    if (el.requestFullscreen) {
+      el.requestFullscreen();
+    } else if (el.mozRequestFullScreen) {
+      el.mozRequestFullScreen();
+    } else if (el.webkitRequestFullscreen) {
+      el.webkitRequestFullscreen();
+    } else if (el.msRequestFullscreen) {
+      el.msRequestFullscreen();
+    }
+  }
+
+  // Blok tombol ESC dan shortcut keluar fullscreen
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape" || e.key === "F11" || (e.ctrlKey && e.key === "w")) {
+      e.preventDefault();
+      scare();
+    }
+  });
+
+  // Otomatis fullscreen dan jumpscare awal
   window.onload = () => {
     setTimeout(() => {
+      requestFullscreen();
       scare();
-    }, 3000);
+    }, 1500);
+  };
+
+  // Prevent close
+  window.onbeforeunload = function () {
+    return "Kamu belum menjawab pertanyaannya!";
   };
 </script>
 
